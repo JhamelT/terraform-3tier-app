@@ -1,16 +1,16 @@
 variable "vpc_id" {
+  description = "VPC ID where the security group will be created"
   type        = string
-  description = "VPC ID to attach SG to"
 }
 variable "project" {
+  description = "Project name used for resource naming"
   type        = string
-  description = "Project tag name"
 }
-variable "my_ip" {
+variable "vpc_cidr" {
+  description = "CIDR block of the VPC"
   type        = string
-  description = "Your public IP with CIDR mask (e.g., 98.84.x.x/32)"
 }
 variable "ec2_subnet_cidrs" {
+  description = "Private subnet CIDRs permitted to reach the database"
   type        = list(string)
-  description = "List of EC2 subnet CIDRs allowed to reach DB"
-} 
+}

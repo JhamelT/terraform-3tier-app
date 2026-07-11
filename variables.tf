@@ -1,4 +1,3 @@
-
 variable "project" {
   description = "Project or environment name prefix"
   type        = string
@@ -9,6 +8,13 @@ variable "region" {
   description = "AWS region to deploy to"
   type        = string
   default     = "us-east-1"
+}
+
+variable "environment" {
+  description = "Deployment enviroment"
+  type        = string
+  default     = "dev"
+
 }
 
 variable "vpc_cidr" {

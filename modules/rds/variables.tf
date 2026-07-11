@@ -18,7 +18,7 @@ variable "project" {}
 
 variable "publicly_accessible" {
 
-  type    = bool
+  type = bool
 
   default = false
-} 
+}

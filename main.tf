@@ -1,6 +1,13 @@
 provider "aws" {
-  region = "us-east-1" # Replace with your desired AWS region
-  # Credentials will be loaded from environment variables or shared credentials file
+  region = var.region
+
+  default_tags {
+    tags = {
+      Project     = var.project
+      Environment = var.environment
+      ManagedBy   = "Terraform"
+    }
+  }
 }
 
 resource "aws_vpc" "main" {
@@ -107,26 +114,26 @@ module "rds" {
   rds_sg_id           = module.security_group.sg_id
   private_subnet_ids  = module.vpc.private_subnet_ids
   project             = var.project
-  publicly_accessible = true
+  publicly_accessible = false
 }
 
 module "ec2" {
-  source               = "./modules/ec2"
-  ami_id               = var.ami_id
-  instance_type        = var.instance_type
-  subnet_id            = module.vpc.private_subnet_ids[0] # This is correct
-  sg_id                = module.security_group.sg_id
-  project              = var.project
-  iam_instance_profile = module.ec2.ec2_ssm_profile_name
+  source        = "./modules/ec2"
+  ami_id        = var.ami_id
+  instance_type = var.instance_type
+  subnet_id     = module.vpc.private_subnet_ids[0]
+  sg_id         = module.security_group.sg_id
+  project       = var.project
 }
 
 module "security_group" {
   source           = "./modules/security_group"
   vpc_id           = module.vpc.vpc_id
-  my_ip            = "52.87.221.92" # Replace with your IP
+  vpc_cidr         = var.vpc_cidr
   project          = var.project
-  ec2_subnet_cidrs = var.public_subnet_cidrs
+  ec2_subnet_cidrs = var.private_subnet_cidrs
 }
+
 module "vpc" {
   source               = "./modules/vpc"
   vpc_cidr             = var.vpc_cidr
