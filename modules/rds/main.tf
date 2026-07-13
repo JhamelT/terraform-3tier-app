@@ -14,8 +14,9 @@ resource "aws_db_instance" "this" {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name       = "rds_subnet_group" # Simple name that starts with a letter
-  subnet_ids = var.private_subnet_ids
+  name        = "app-${var.project}-db-subnet-group"
+  description = "Private DB subnet group for ${var.project}"
+  subnet_ids  = var.private_subnet_ids
 
   tags = {
     Name = "${var.project}-db-subnet-group"
