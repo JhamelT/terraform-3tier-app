@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="670" viewBox="0 0 680 670" role="img" font-family="-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+<title>AWS Security Remediation Platform — Architecture</title>
+<desc>Account activity logs feed GuardDuty inside the AWS Cloud. A high-severity finding triggers EventBridge, which invokes Lambda. Lambda quarantines the identity via IAM and alerts the team via SNS. CloudTrail audits everything and Terraform defines the stack.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+.box { fill:#ffffff; stroke:#d4d9e0; stroke-width:1; }
+.th { fill:#1a2230; font-size:14px; font-weight:600; }
+.ts { fill:#5b6472; font-size:12px; }
+.arr { stroke:#5b6472; stroke-width:1.5; fill:none; }
+.cloud { fill:none; stroke:#aab2bf; stroke-width:1; stroke-dasharray:6 4; }
+.cloudlbl { fill:#5b6472; font-size:12px; }
+</style>
+</defs>
+<rect width="680" height="670" fill="#f7f8fa"/>
+
+<g><rect class="box" x="200" y="24" width="280" height="52" rx="8"/></g>
+<rect x="208" y="30" width="40" height="40" rx="6" fill="#5F5E5A"/>
+<line x1="219" y1="44" x2="237" y2="44" stroke="#fff" stroke-width="1.5"/>
+<line x1="219" y1="50" x2="233" y2="50" stroke="#fff" stroke-width="1.5"/>
+<line x1="219" y1="56" x2="237" y2="56" stroke="#fff" stroke-width="1.5"/>
+<text class="th" x="258" y="42" dominant-baseline="central">Account activity</text>
+<text class="ts" x="258" y="60" dominant-baseline="central">CloudTrail · VPC flow · DNS logs</text>
+<line x1="340" y1="76" x2="340" y2="120" class="arr" marker-end="url(#arrow)"/>
+
+<rect class="cloud" x="48" y="90" width="584" height="540" rx="14"/>
+<path d="M62,104 q0,-7 8,-6 q3,-5 9,-2 q6,-1 6,6 q5,1 3,6 H60 q-3,-4 2,-4 Z" fill="none" stroke="#8C4FFF" stroke-width="1"/>
+<text class="cloudlbl" x="92" y="106" dominant-baseline="central">AWS Cloud</text>
+
+<g><rect class="box" x="200" y="124" width="280" height="56" rx="8"/></g>
+<rect x="208" y="130" width="44" height="44" rx="6" fill="#A32D2D"/>
+<path d="M230,141 L239,145 V153 Q239,161 230,164 Q221,161 221,153 V145 Z" fill="none" stroke="#fff" stroke-width="2"/>
+<path d="M226,152 L229,155 L235,148" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="th" x="264" y="146" dominant-baseline="central">GuardDuty</text>
+<text class="ts" x="264" y="164" dominant-baseline="central">ML threat detection</text>
+<line x1="340" y1="180" x2="340" y2="206" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="430" y="193" dominant-baseline="central">severity ≥ 4.0</text>
+
+<g><rect class="box" x="200" y="206" width="280" height="56" rx="8"/></g>
+<rect x="208" y="212" width="44" height="44" rx="6" fill="#993556"/>
+<line x1="221" y1="234" x2="230" y2="234" stroke="#fff" stroke-width="2"/>
+<line x1="230" y1="234" x2="239" y2="228" stroke="#fff" stroke-width="2"/>
+<line x1="230" y1="234" x2="239" y2="240" stroke="#fff" stroke-width="2"/>
+<circle cx="220" cy="234" r="2.2" fill="#fff"/><circle cx="240" cy="228" r="2.2" fill="#fff"/><circle cx="240" cy="240" r="2.2" fill="#fff"/>
+<text class="th" x="264" y="228" dominant-baseline="central">EventBridge</text>
+<text class="ts" x="264" y="246" dominant-baseline="central">Pattern-match router</text>
+<line x1="340" y1="262" x2="340" y2="292" class="arr" marker-end="url(#arrow)"/>
+<text class="ts" x="424" y="277" dominant-baseline="central">invokes &lt; 1s</text>
+
+<g><rect class="box" x="200" y="292" width="280" height="96" rx="8"/></g>
+<rect x="208" y="298" width="44" height="44" rx="6" fill="#ED7100"/>
+<text x="230" y="321" fill="#fff" font-size="24" text-anchor="middle" dominant-baseline="central">&#955;</text>
+<text class="th" x="264" y="314" dominant-baseline="central">Lambda</text>
+<text class="ts" x="264" y="338" dominant-baseline="central">Deactivate access keys</text>
+<text class="ts" x="264" y="358" dominant-baseline="central">Attach deny policy</text>
+<text class="ts" x="264" y="378" dominant-baseline="central">Disable console access</text>
+<path d="M300,388 L240,428" class="arr" marker-end="url(#arrow)"/>
+<path d="M380,388 L450,428" class="arr" marker-end="url(#arrow)"/>
+
+<g><rect class="box" x="90" y="430" width="200" height="56" rx="8"/></g>
+<rect x="98" y="436" width="44" height="44" rx="6" fill="#A32D2D"/>
+<circle cx="116" cy="454" r="5" fill="none" stroke="#fff" stroke-width="2"/>
+<line x1="119" y1="457" x2="128" y2="466" stroke="#fff" stroke-width="2"/>
+<line x1="128" y1="466" x2="131" y2="463" stroke="#fff" stroke-width="1.6"/>
+<line x1="125" y1="468" x2="128" y2="465" stroke="#fff" stroke-width="1.6"/>
+<text class="th" x="154" y="452" dominant-baseline="central">IAM</text>
+<text class="ts" x="154" y="470" dominant-baseline="central">Quarantine identity</text>
+
+<g><rect class="box" x="390" y="430" width="200" height="56" rx="8"/></g>
+<rect x="398" y="436" width="44" height="44" rx="6" fill="#993556"/>
+<path d="M413,462 Q413,452 420,451 Q427,452 427,462 Z" fill="#fff"/>
+<line x1="410" y1="462" x2="430" y2="462" stroke="#fff" stroke-width="2"/>
+<circle cx="420" cy="450" r="1.6" fill="#fff"/><circle cx="420" cy="465" r="2" fill="#fff"/>
+<text class="th" x="444" y="452" dominant-baseline="central">SNS</text>
+<text class="ts" x="444" y="470" dominant-baseline="central">Alert security team</text>
+
+<g><rect class="box" x="120" y="512" width="440" height="48" rx="8"/></g>
+<rect x="128" y="518" width="36" height="36" rx="6" fill="#993556"/>
+<circle cx="143" cy="531" r="6" fill="none" stroke="#fff" stroke-width="2"/>
+<line x1="148" y1="536" x2="153" y2="541" stroke="#fff" stroke-width="2"/>
+<text class="th" x="176" y="528" dominant-baseline="central">CloudTrail audits everything</text>
+<text class="ts" x="176" y="546" dominant-baseline="central">SOC 2 · HIPAA · PCI ready</text>
+
+<g><rect class="box" x="120" y="572" width="440" height="44" rx="8"/></g>
+<rect x="128" y="576" width="36" height="36" rx="6" fill="#BA7517"/>
+<polygon points="135,587 146,584 157,587 146,590" fill="none" stroke="#fff" stroke-width="1.3"/>
+<polygon points="135,594 146,591 157,594 146,597" fill="none" stroke="#fff" stroke-width="1.3"/>
+<text class="th" x="176" y="588" dominant-baseline="central">Entire stack = Terraform</text>
+<text class="ts" x="176" y="604" dominant-baseline="central">~$6/mo · MTTR hours to under 60s</text>
+
+<rect x="70" y="638" width="12" height="12" rx="2" fill="#A32D2D"/>
+<text class="ts" x="88" y="645" dominant-baseline="central">Security</text>
+<rect x="168" y="638" width="12" height="12" rx="2" fill="#993556"/>
+<text class="ts" x="186" y="645" dominant-baseline="central">Integration / Mgmt</text>
+<rect x="330" y="638" width="12" height="12" rx="2" fill="#ED7100"/>
+<text class="ts" x="348" y="645" dominant-baseline="central">Compute</text>
+<rect x="430" y="638" width="12" height="12" rx="2" fill="#5F5E5A"/>
+<text class="ts" x="448" y="645" dominant-baseline="central">Log sources</text>
+</svg>
